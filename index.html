@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>糯米AI vs 传统工具全面对比</title>
+    <title>糯米AI vs 传统工具全面对比 - React版</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body, html {
@@ -14,26 +17,11 @@
             height: 100vh;
             width: 100vw;
         }
-        .slide {
-            display: none;
-            width: 100vw;
-            height: 100vh;
-        }
-        .slide.active {
-            display: flex;
-        }
-        .slide-transition {
-            transition: opacity 0.3s ease-in-out;
-        }
-        /* 确保emoji彩色显示 */
+        
         .emoji {
             font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
-            color: inherit;
-            text-shadow: none;
-            filter: none;
-            font-weight: normal;
         }
-        /* 图标样式 */
+        
         .icon {
             display: inline-block;
             width: 1.2em;
@@ -46,615 +34,959 @@
             font-weight: bold;
             font-size: 0.8em;
         }
-        /* 防止页面滚动 */
+        
         body {
             touch-action: none;
             overscroll-behavior: none;
         }
-        /* 控制栏固定 */
-        .control-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            pointer-events: auto;
+        
+        .slide-enter {
+            opacity: 0;
+            transform: translateX(100%);
         }
-        /* 导航按钮 */
-        .nav-btn {
-            pointer-events: auto;
-            cursor: pointer;
+        
+        .slide-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.3s ease-out;
+        }
+        
+        .slide-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide-exit-active {
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: all 0.3s ease-out;
         }
     </style>
 </head>
 <body>
-    <!-- 第1页：封面页 -->
-    <div class="slide active slide-transition bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white flex flex-col justify-center items-center p-6">
-        <h1 class="text-4xl font-bold text-center mb-6">糯米AI vs 传统工具全面对比</h1>
-        <p class="text-xl text-center text-blue-200 mb-4">从单点解决到全链路智能化</p>
-        <div class="w-16 h-1 bg-orange-400 mx-auto mb-6"></div>
-        <p class="text-center text-orange-200 font-medium leading-relaxed max-w-2xl">
-            好的AI系统 = 10年经验的老员工<br>
-            一个眼神就心领神会，无需繁琐培训和反复沟通
-        </p>
-    </div>
+    <div id="root"></div>
 
-    <!-- 第2页：全链路闭环系统 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-3xl font-bold text-center mb-4 text-orange-400">全链路闭环系统</h1>
-        <p class="text-center mb-8 text-slate-300">从公域引流到私域自动化成交的完整解决方案</p>
-        <div class="space-y-6">
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 text-center">
-                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-white font-bold">1</div>
-                <h3 class="text-lg font-bold mb-2 text-orange-400">公域引流</h3>
-                <p class="text-sm text-slate-300">线上运营组+短视频编导组</p>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 text-center">
-                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-white font-bold">2</div>
-                <h3 class="text-lg font-bold mb-2 text-orange-400">内容生产</h3>
-                <p class="text-sm text-slate-300">文案编导组+直播组</p>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 text-center">
-                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-white font-bold">3</div>
-                <h3 class="text-lg font-bold mb-2 text-orange-400">私域转化</h3>
-                <p class="text-sm text-slate-300">私域运营组+自动化SOP</p>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 text-center">
-                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-white font-bold">4</div>
-                <h3 class="text-lg font-bold mb-2 text-orange-400">持续运营</h3>
-                <p class="text-sm text-slate-300">全模块协同工作</p>
-            </div>
-        </div>
-    </div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
 
-    <!-- 第3页：总结页 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-3xl font-bold text-center mb-4 text-orange-400">糯米AI = 替代整个部门</h1>
-        <p class="text-center mb-6 text-slate-300">一套系统，多岗位智能化替代</p>
-        <div class="space-y-4">
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="text-2xl mr-3 emoji">📝</div>
-                    <div>
-                        <h3 class="text-base font-bold text-orange-400">文案岗</h3>
-                        <p class="text-xs text-slate-300">文案编导组</p>
-                    </div>
-                </div>
-                <div class="text-slate-400">→</div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="text-2xl mr-3 emoji">🎬</div>
-                    <div>
-                        <h3 class="text-base font-bold text-orange-400">剪辑岗</h3>
-                        <p class="text-xs text-slate-300">短视频编导组</p>
-                    </div>
-                </div>
-                <div class="text-slate-400">→</div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="text-2xl mr-3 emoji">📺</div>
-                    <div>
-                        <h3 class="text-base font-bold text-orange-400">直播策划岗</h3>
-                        <p class="text-xs text-slate-300">直播组</p>
-                    </div>
-                </div>
-                <div class="text-slate-400">→</div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="text-2xl mr-3 emoji">📈</div>
-                    <div>
-                        <h3 class="text-base font-bold text-orange-400">运营岗</h3>
-                        <p class="text-xs text-slate-300">线上运营组</p>
-                    </div>
-                </div>
-                <div class="text-slate-400">→</div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="text-2xl mr-3 emoji">💼</div>
-                    <div>
-                        <h3 class="text-base font-bold text-orange-400">销售岗</h3>
-                        <p class="text-xs text-slate-300">私域运营组</p>
-                    </div>
-                </div>
-                <div class="text-slate-400">→</div>
-            </div>
-        </div>
-        <div class="bg-gradient-to-r from-orange-900/50 to-blue-900/50 border border-orange-500 rounded-lg p-4 mt-6">
-            <p class="text-center text-sm leading-relaxed text-orange-200">
-                传统方案：多个工具 + 多个岗位 + 高成本<br>
-                糯米AI：一套系统解决全链路需求
-            </p>
-        </div>
-    </div>
+        // Lucide React 图标组件 (简化版)
+        const ChevronLeft = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+        );
 
-    <!-- 第4页：功能总览页 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-xl font-bold text-center mb-4 text-orange-400">糯米AI五大功能模块</h1>
-        <div class="space-y-4">
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">⚡</span> 文案编导组</h3>
-                <p class="text-xs text-orange-300 mb-3">秒出获客文案（1天1人完成3人1月工作量）</p>
-                <div class="text-xs text-slate-300 space-y-1">
-                    <p>• 给主题撰写文案 - 1分钟生成完整钩子文案</p>
-                    <p>• 长文章改写爆款 - 粘贴长文，秒变爆款短文案</p>
-                    <p>• 爆款黄金开头 - 16种开头，3秒抓住注意力</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">🎬</span> 短视频编导组</h3>
-                <p class="text-xs text-orange-300 mb-3">短视频获客蓝海工厂（一人顶一个视频团队）</p>
-                <div class="text-xs text-slate-300 space-y-1">
-                    <p>• AI数字人 - 输入文案脚本，自动生成数字人播报视频</p>
-                    <p>• 短阵系统 - 智能管理多个短视频账号</p>
-                    <p>• 视频包装精剪 - 自动添加字幕、转场、音效</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">📢</span> 直播组</h3>
-                <p class="text-xs text-orange-300 mb-3">高转化直播内容生产（让直播间成交翻10倍）</p>
-                <div class="text-xs text-slate-300 space-y-1">
-                    <p>• 直播稿拆解 - 智能拆解成交逻辑和话术技巧</p>
-                    <p>• 直播稿框架 - 自动生成完整直播稿框架</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">📈</span> 线上运营组</h3>
-                <p class="text-xs text-orange-300 mb-3">全域流量获客系统（从0到1建立获客机器）</p>
-                <div class="text-xs text-slate-300 space-y-1">
-                    <p>• 线上定位大师 - 9套定位分析，解决同质化竞争</p>
-                    <p>• 引流钩子设计师 - 批量生成吸引精准用户的引流钩子</p>
-                    <p>• AI海报 - 输入信息，自动设计专业海报</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">👥</span> 私域运营组</h3>
-                <p class="text-xs text-orange-300 mb-3">变现收割机（让你月业绩快速成交）</p>
-                <div class="text-xs text-slate-300 space-y-1">
-                    <p>• 朋友圈大师 - 10种不同类型的高转化朋友圈文案</p>
-                    <p>• 私域SOP策划师 - 制定完整的社群维护流程</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        const ChevronRight = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+        );
 
-    <!-- 第5页：文案编导组对比 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-xl font-bold text-center mb-4 text-orange-400">文案编导组对比</h1>
-        <div class="space-y-4">
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-orange-500">
-                <div class="bg-orange-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">糯米AI - 文案编导组</h2>
-                    <p class="text-xs text-orange-100 mt-1">秒出获客文案（1天1人完成3人1月的工作量）</p>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 给主题撰写文案 - 1分钟生成完整钩子文案，零基础也能写出专业内容</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 长文章改写爆款 - 粘贴长文，秒变爆款短文案</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 爆款黄金开头 - 16种开头，3秒抓住用户注意力</p>
-                    </div>
-                </div>
-                <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🚀</span> 超高效率：一天一人完成3人一月的工作量</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
-                <div class="bg-gray-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">DeepSeek</h2>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 基础文案生成</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 需要详细提示词</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 缺乏行业针对性</p>
-                    </div>
-                </div>
-                <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs"><span class="emoji">❌</span> 被动生成，需要反复调试</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        const Zap = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        );
 
-    <!-- 第6页：短视频编导组对比 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-xl font-bold text-center mb-4 text-orange-400">短视频编导组对比</h1>
-        <div class="space-y-4">
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-orange-500">
-                <div class="bg-orange-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">糯米AI - 短视频编导组</h2>
-                    <p class="text-xs text-orange-100 mt-1">短视频获客蓝海工厂（一人顶一个视频团队）</p>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> AI数字人 - 告别真人出镜限制</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 短阵系统 - 智能管理多个账号</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 视频包装精剪 - 剪辑不求人</p>
-                    </div>
-                </div>
-                <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🎬</span> 革命性创新：无需拍摄，一键生成专业视频</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
-                <div class="bg-gray-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">剪映</h2>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 需要拍摄素材</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 手动剪辑</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 时间消耗大</p>
-                    </div>
-                </div>
-                <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs"><span class="emoji">⏱️</span> 传统流程：拍摄→剪辑→修正，耗时耗力</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        const Users = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+            </svg>
+        );
 
-    <!-- 第7页：直播组对比 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-xl font-bold text-center mb-4 text-orange-400">直播组对比</h1>
-        <div class="space-y-4">
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-orange-500">
-                <div class="bg-orange-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">糯米AI - 直播组</h2>
-                    <p class="text-xs text-orange-100 mt-1">高转化直播内容生产（让直播间成交翻10倍）</p>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 直播稿拆解 - 智能拆解成交逻辑和话术技巧</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 直播稿框架 - 自动生成完整直播稿框架</p>
-                    </div>
-                </div>
-                <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🎯</span> 深度理解直播逻辑，提供完整解决方案</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
-                <div class="bg-gray-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">传统直播脚本工具</h2>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 基础脚本模板</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 缺乏个性化</p>
-                    </div>
-                </div>
-                <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs"><span class="emoji">📝</span> 只提供模板，缺乏智能化指导</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        const Megaphone = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10l2 5.5V18a2 2 0 01-2 2H8a2 2 0 01-2-2V9.5L8 4z" />
+            </svg>
+        );
 
-    <!-- 第8页：线上运营组对比 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-xl font-bold text-center mb-4 text-orange-400">线上运营组对比</h1>
-        <div class="space-y-4">
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-orange-500">
-                <div class="bg-orange-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">糯米AI - 线上运营组</h2>
-                    <p class="text-xs text-orange-100 mt-1">全域流量获客系统（从0到1建立线上获客机器）</p>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 线上定位大师 - 9套定位分析</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 引流钩子设计师 - 批量生成精准钩子</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> AI海报 - 自动设计专业海报</p>
-                    </div>
-                </div>
-                <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🚀</span> 全链路运营思维，完整方案</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
-                <div class="bg-gray-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">单一功能工具</h2>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 功能分散</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 需要多工具协作</p>
-                    </div>
-                </div>
-                <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs"><span class="emoji">🔧</span> 功能割裂，缺乏系统性</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        const Share2 = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+            </svg>
+        );
 
-    <!-- 第9页：私域运营对比 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-xl font-bold text-center mb-4 text-orange-400">私域运营对比</h1>
-        <div class="space-y-4">
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-orange-500">
-                <div class="bg-orange-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">糯米AI - 私域运营组</h2>
-                    <p class="text-xs text-orange-100 mt-1">变现收割机（让你月业绩成交）</p>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 朋友圈大师（10种） - 覆盖全场景</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 私域SOP策划师 - 完整运营流程</p>
-                    </div>
-                </div>
-                <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">💬</span> 深度理解私域运营，个性化策略</p>
-                </div>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
-                <div class="bg-gray-500 text-white p-3 rounded-lg mb-4">
-                    <h2 class="text-lg font-bold">朋友圈文案工具</h2>
-                </div>
-                <div class="space-y-2 mb-4">
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 文案素材库</p>
-                    </div>
-                    <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 缺乏策略指导</p>
-                    </div>
-                </div>
-                <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs"><span class="emoji">📱</span> 只提供素材，缺乏专业化运营</p>
-                </div>
-            </div>
-        </div>
-    </div>
+        const Video = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+        );
 
-    <!-- 第10页：结尾页面 -->
-    <div class="slide slide-transition bg-slate-900 text-white p-6 overflow-y-auto">
-        <h1 class="text-3xl font-bold text-center mb-4 text-orange-400">运营思维升级</h1>
-        <p class="text-center mb-6 text-slate-300">糯米AI带来的不仅仅是工具升级</p>
-        <p class="text-center mb-6 text-orange-200 text-sm leading-relaxed">
-            不只是工具的替换，更是企业运营思维的升级。让每个企业都能享受到AI时代的红利，实现真正的数字化转型和智能化运营。
-        </p>
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="bg-slate-800 rounded-lg p-3 border border-slate-700 text-center">
-                <h3 class="text-sm font-bold text-orange-400 mb-2">思维升级</h3>
-                <p class="text-slate-300 text-xs">从单点工具到全链路思维</p>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-3 border border-slate-700 text-center">
-                <h3 class="text-sm font-bold text-orange-400 mb-2">AI红利</h3>
-                <p class="text-slate-300 text-xs">享受人工智能时代的发展机遇</p>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-3 border border-slate-700 text-center">
-                <h3 class="text-sm font-bold text-orange-400 mb-2">数字化转型</h3>
-                <p class="text-slate-300 text-xs">实现企业全面数字化升级</p>
-            </div>
-            <div class="bg-slate-800 rounded-lg p-3 border border-slate-700 text-center">
-                <h3 class="text-sm font-bold text-orange-400 mb-2">智能化运营</h3>
-                <p class="text-slate-300 text-xs">让AI成为企业运营的核心驱动力</p>
-            </div>
-        </div>
-        <div class="bg-slate-800 rounded-lg border-2 border-orange-400 p-4 mb-6">
-            <h3 class="text-lg font-bold text-orange-400 text-center mb-4"><span class="emoji">🧠</span> AI系统价值 <span class="emoji">🧠</span></h3>
-            <div class="text-center space-y-3">
-                <p class="text-base text-orange-200 font-medium">一套AI系统承载整个企业的运营流程，打造永动的商业引擎。</p>
-                <p class="text-sm text-blue-200">标准化管理，让系统更落地更实用。</p>
-                <p class="text-orange-300 font-medium text-sm"><span class="emoji">✨</span> 持续优化升级中······ <span class="emoji">✨</span></p>
-            </div>
-        </div>
-        <div class="text-center">
-            <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-blue-500 text-white px-4 py-3 rounded-lg text-sm font-bold">
-                <span class="emoji">🧠</span> AI时代，让智能成为你的竞争优势 <span class="emoji">✨</span>
-            </div>
-        </div>
-    </div>
+        const ArrowRight = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+        );
 
-    <!-- 控制栏 -->
-    <div class="control-bar bg-slate-800 text-white p-2 flex items-center justify-between max-w-md mx-auto">
-        <span class="text-xs" id="slideCounter">1 / 10</span>
-        <div class="flex space-x-1" id="slideNavigation">
-            <button class="nav-btn w-2 h-2 rounded-full bg-orange-400 scale-125" onclick="goToSlide(0)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(1)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(2)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(3)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(4)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(5)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(6)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(7)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(8)"></button>
-            <button class="nav-btn w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500" onclick="goToSlide(9)"></button>
-        </div>
-        <span class="text-xs text-slate-400">滑动翻页</span>
-    </div>
+        const CheckCircle = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        );
 
-    <script>
-        let currentSlide = 0;
-        const totalSlides = 10;
-        let touchStartX = null;
-        let touchEndX = null;
-        let isTransitioning = false;
+        const X = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        );
 
-        // 获取所有幻灯片
-        const slides = document.querySelectorAll('.slide');
-        const slideCounter = document.getElementById('slideCounter');
-        const navigationButtons = document.querySelectorAll('.nav-btn');
+        const Brain = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+        );
 
-        // 显示指定幻灯片
-        function showSlide(index) {
-            if (isTransitioning) return;
-            
-            slides.forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
-            });
-            
-            slideCounter.textContent = `${index + 1} / ${totalSlides}`;
-            
-            navigationButtons.forEach((btn, i) => {
-                if (i === index) {
-                    btn.classList.remove('bg-slate-600', 'hover:bg-slate-500');
-                    btn.classList.add('bg-orange-400', 'scale-125');
-                } else {
-                    btn.classList.remove('bg-orange-400', 'scale-125');
-                    btn.classList.add('bg-slate-600', 'hover:bg-slate-500');
+        const Sparkles = ({ className }) => (
+            <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 21a2 2 0 01-2-2v-2a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5zM19 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2h-2zM19 21a2 2 0 01-2-2v-2a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2z" />
+            </svg>
+        );
+
+        const PPTDemo = () => {
+            const [currentSlide, setCurrentSlide] = useState(0);
+            const [isTransitioning, setIsTransitioning] = useState(false);
+            const [touchStart, setTouchStart] = useState(null);
+            const [touchEnd, setTouchEnd] = useState(null);
+            const scrollContainerRef = useRef(null);
+
+            const slides = [
+                // 封面页
+                {
+                    type: 'cover',
+                    title: '糯米AI vs 传统工具全面对比',
+                    subtitle: '从单点解决到全链路智能化',
+                    quote: '好的AI系统 = 10年经验的老员工\n一个眼神就心领神会，无需繁琐培训和反复沟通',
+                    background: 'bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800'
+                },
+                // 全链路闭环系统
+                {
+                    type: 'workflow',
+                    title: '全链路闭环系统',
+                    subtitle: '从公域引流到私域自动化成交的完整解决方案',
+                    steps: [
+                        { name: '公域引流', desc: '线上运营组+短视频编导组' },
+                        { name: '内容生产', desc: '文案编导组+直播组' },
+                        { name: '私域转化', desc: '私域运营组+自动化SOP' },
+                        { name: '持续运营', desc: '全模块协同工作' }
+                    ]
+                },
+                // 总结页
+                {
+                    type: 'summary',
+                    title: '糯米AI = 替代整个部门',
+                    subtitle: '一套系统，多岗位智能化替代',
+                    replacements: [
+                        { position: '文案岗', module: '文案编导组', icon: '✍️' },
+                        { position: '剪辑岗', module: '短视频编导组', icon: '🎬' },
+                        { position: '直播策划岗', module: '直播组', icon: '📺' },
+                        { position: '运营岗', module: '线上运营组', icon: '📈' },
+                        { position: '销售岗', module: '私域运营组', icon: '💼' }
+                    ],
+                    conclusion: '传统方案：多个工具 + 多个岗位 + 高成本\n糯米AI：一套系统解决全链路需求'
+                },
+                // 功能总览页
+                {
+                    type: 'overview',
+                    title: '糯米AI五大功能模块',
+                    subtitle: 'From single-point solutions to end-to-end intelligentization',
+                    modules: [
+                        {
+                            icon: React.createElement(Zap, { className: "w-5 h-5" }),
+                            name: '文案编导组',
+                            subtitle: '秒出获客文案（1天1人完成3人1月工作量）',
+                            keyFeatures: [
+                                {
+                                    title: '给主题撰写文案',
+                                    desc: '输入主题、话题，1分钟生成完整钩子文案，零基础也能写出专业内容'
+                                },
+                                {
+                                    title: '长文章改写爆款文案',
+                                    desc: '粘贴长文，秒变爆款短文案，省去手动精简的繁琐过程'
+                                },
+                                {
+                                    title: '爆款黄金开头（16种）',
+                                    desc: '给任主题、话题，瞬间生成吸睛开头，3秒抓住用户注意力'
+                                }
+                            ]
+                        },
+                        {
+                            icon: React.createElement(Video, { className: "w-5 h-5" }),
+                            name: '短视频编导组',
+                            subtitle: '短视频获客蓝海工厂（一人顶一个视频团队）',
+                            keyFeatures: [
+                                {
+                                    title: 'AI数字人',
+                                    desc: '输入文案脚本，自动生成数字人播报视频'
+                                },
+                                {
+                                    title: '短阵系统',
+                                    desc: '智能管理多个短视频账号'
+                                },
+                                {
+                                    title: '视频包装精剪',
+                                    desc: '自动添加字幕、转场、音效'
+                                }
+                            ]
+                        },
+                        {
+                            icon: React.createElement(Megaphone, { className: "w-5 h-5" }),
+                            name: '直播组',
+                            subtitle: '高转化直播内容生产（让直播间成交翻10倍）',
+                            keyFeatures: [
+                                {
+                                    title: '直播稿拆解',
+                                    desc: '智能拆解成交逻辑和话术技巧'
+                                },
+                                {
+                                    title: '直播稿框架',
+                                    desc: '自动生成完整直播稿框架'
+                                }
+                            ]
+                        },
+                        {
+                            icon: React.createElement(Share2, { className: "w-5 h-5" }),
+                            name: '线上运营组',
+                            subtitle: '全域流量获客系统（从0到1建立获客机器）',
+                            keyFeatures: [
+                                {
+                                    title: '线上定位大师',
+                                    desc: '9套定位分析，解决同质化竞争'
+                                },
+                                {
+                                    title: '引流钩子设计师',
+                                    desc: '批量生成吸引精准用户的引流钩子'
+                                },
+                                {
+                                    title: 'AI海报',
+                                    desc: '输入信息，自动设计专业海报'
+                                }
+                            ]
+                        },
+                        {
+                            icon: React.createElement(Users, { className: "w-5 h-5" }),
+                            name: '私域运营组',
+                            subtitle: '变现收割机（让你月业绩快速成交）',
+                            keyFeatures: [
+                                {
+                                    title: '朋友圈大师（10种）',
+                                    desc: '10种不同类型的高转化朋友圈文案'
+                                },
+                                {
+                                    title: '私域SOP策划师',
+                                    desc: '制定完整的社群维护流程'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                // 文案编导组对比
+                {
+                    type: 'comparison',
+                    title: '文案编导组对比',
+                    leftSide: {
+                        title: '糯米AI - 文案编导组',
+                        subtitle: '秒出获客文案（1天1人完成3人1月的工作量）',
+                        color: 'bg-orange-500',
+                        features: [
+                            '给主题撰写文案 - 1分钟生成完整钩子文案，零基础也能写出专业内容',
+                            '长文章改写爆款 - 粘贴长文，秒变爆款短文案',
+                            '爆款黄金开头 - 16种开头，3秒抓住用户注意力'
+                        ],
+                        advantage: '🚀 超高效率：一天一人完成3人一月的工作量'
+                    },
+                    rightSide: {
+                        title: 'DeepSeek',
+                        color: 'bg-gray-500',
+                        features: ['基础文案生成', '需要详细提示词', '缺乏行业针对性'],
+                        disadvantage: '❌ 被动生成，需要反复调试'
+                    }
+                },
+                // 短视频编导组对比
+                {
+                    type: 'comparison',
+                    title: '短视频编导组对比',
+                    leftSide: {
+                        title: '糯米AI - 短视频编导组',
+                        subtitle: '短视频获客蓝海工厂（一人顶一个视频团队）',
+                        color: 'bg-orange-500',
+                        features: [
+                            'AI数字人 - 告别真人出镜限制',
+                            '短阵系统 - 智能管理多个账号',
+                            '视频包装精剪 - 剪辑不求人'
+                        ],
+                        advantage: '🎬 革命性创新：无需拍摄，一键生成专业视频'
+                    },
+                    rightSide: {
+                        title: '剪映',
+                        color: 'bg-gray-500',
+                        features: ['需要拍摄素材', '手动剪辑', '时间消耗大'],
+                        disadvantage: '⏱️ 传统流程：拍摄→剪辑→修正，耗时耗力'
+                    }
+                },
+                // 直播组对比
+                {
+                    type: 'comparison',
+                    title: '直播组对比',
+                    leftSide: {
+                        title: '糯米AI - 直播组',
+                        subtitle: '高转化直播内容生产（让直播间成交翻10倍）',
+                        color: 'bg-orange-500',
+                        features: [
+                            '直播稿拆解 - 智能拆解成交逻辑和话术技巧',
+                            '直播稿框架 - 自动生成完整直播稿框架'
+                        ],
+                        advantage: '🎯 深度理解直播逻辑，提供完整解决方案'
+                    },
+                    rightSide: {
+                        title: '传统直播脚本工具',
+                        color: 'bg-gray-500',
+                        features: ['基础脚本模板', '缺乏个性化'],
+                        disadvantage: '📝 只提供模板，缺乏智能化指导'
+                    }
+                },
+                // 线上运营组对比
+                {
+                    type: 'comparison',
+                    title: '线上运营组对比',
+                    leftSide: {
+                        title: '糯米AI - 线上运营组',
+                        subtitle: '全域流量获客系统（从0到1建立线上获客机器）',
+                        color: 'bg-orange-500',
+                        features: [
+                            '线上定位大师 - 9套定位分析',
+                            '引流钩子设计师 - 批量生成精准钩子',
+                            'AI海报 - 自动设计专业海报'
+                        ],
+                        advantage: '🚀 全链路运营思维，完整方案'
+                    },
+                    rightSide: {
+                        title: '单一功能工具',
+                        color: 'bg-gray-500',
+                        features: ['功能分散', '需要多工具协作'],
+                        disadvantage: '🔧 功能割裂，缺乏系统性'
+                    }
+                },
+                // 私域运营对比
+                {
+                    type: 'comparison',
+                    title: '私域运营对比',
+                    leftSide: {
+                        title: '糯米AI - 私域运营组',
+                        subtitle: '变现收割机（让你月业绩成交）',
+                        color: 'bg-orange-500',
+                        features: [
+                            '朋友圈大师（10种） - 覆盖全场景',
+                            '私域SOP策划师 - 完整运营流程'
+                        ],
+                        advantage: '💬 深度理解私域运营，个性化策略'
+                    },
+                    rightSide: {
+                        title: '朋友圈文案工具',
+                        color: 'bg-gray-500',
+                        features: ['文案素材库', '缺乏策略指导'],
+                        disadvantage: '📱 只提供素材，缺乏专业化运营'
+                    }
+                },
+                // 结尾页面
+                {
+                    type: 'ending',
+                    title: '运营思维升级',
+                    subtitle: '糯米AI带来的不仅仅是工具升级',
+                    content: '不只是工具的替换，更是企业运营思维的升级。让每个企业都能享受到AI时代的红利，实现真正的数字化转型和智能化运营。',
+                    highlights: [
+                        { title: '思维升级', desc: '从单点工具到全链路思维' },
+                        { title: 'AI红利', desc: '享受人工智能时代的发展机遇' },
+                        { title: '数字化转型', desc: '实现企业全面数字化升级' },
+                        { title: '智能化运营', desc: '让AI成为企业运营的核心驱动力' }
+                    ],
+                    additionalContent: {
+                        title: 'AI系统价值',
+                        systemValue: '一套AI系统承载整个企业的运营流程，打造永动的商业引擎。',
+                        management: '标准化管理，让系统更落地更实用。',
+                        development: '持续优化升级中······'
+                    }
                 }
-            });
-            
-            currentSlide = index;
-        }
+            ];
 
-        // 下一张幻灯片
-        function nextSlide() {
-            if (isTransitioning) return;
-            const next = (currentSlide + 1) % totalSlides;
-            showSlide(next);
-        }
-
-        // 上一张幻灯片
-        function prevSlide() {
-            if (isTransitioning) return;
-            const prev = (currentSlide - 1 + totalSlides) % totalSlides;
-            showSlide(prev);
-        }
-
-        // 跳转到指定幻灯片
-        function goToSlide(index) {
-            if (isTransitioning) return;
-            showSlide(index);
-        }
-
-        // 触摸事件处理
-        let touchStartTime = 0;
-        
-        document.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartTime = Date.now();
-        }, { passive: true });
-
-        document.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            const touchEndTime = Date.now();
-            
-            // 防止过快触发
-            if (touchEndTime - touchStartTime < 100) return;
-            
-            handleGesture();
-        }, { passive: true });
-
-        function handleGesture() {
-            if (!touchStartX || !touchEndX || isTransitioning) return;
-            
-            const diff = touchStartX - touchEndX;
-            const minSwipeDistance = 50;
-            
-            if (Math.abs(diff) > minSwipeDistance) {
-                isTransitioning = true;
-                
-                if (diff > 0) {
-                    nextSlide(); // 向左滑动，下一张
-                } else {
-                    prevSlide(); // 向右滑动，上一张
-                }
-                
-                // 防抖
+            const nextSlide = () => {
+                if (isTransitioning) return;
+                setIsTransitioning(true);
                 setTimeout(() => {
-                    isTransitioning = false;
-                }, 300);
-            }
-            
-            touchStartX = null;
-            touchEndX = null;
-        }
+                    setCurrentSlide((prev) => (prev + 1) % slides.length);
+                    resetScrollPosition();
+                    setIsTransitioning(false);
+                }, 150);
+            };
 
-        // 键盘事件处理
-        document.addEventListener('keydown', function(e) {
-            if (isTransitioning) return;
-            
-            if (e.key === 'ArrowLeft') {
+            const prevSlide = () => {
+                if (isTransitioning) return;
+                setIsTransitioning(true);
+                setTimeout(() => {
+                    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+                    resetScrollPosition();
+                    setIsTransitioning(false);
+                }, 150);
+            };
+
+            const goToSlide = (index) => {
+                if (isTransitioning || index === currentSlide) return;
+                setIsTransitioning(true);
+                setTimeout(() => {
+                    setCurrentSlide(index);
+                    resetScrollPosition();
+                    setIsTransitioning(false);
+                }, 150);
+            };
+
+            const resetScrollPosition = () => {
+                if (scrollContainerRef.current) {
+                    scrollContainerRef.current.scrollTop = 0;
+                }
+            };
+
+            const handleTouchStart = (e) => {
+                setTouchEnd(null);
+                setTouchStart(e.targetTouches[0].clientX);
+            };
+
+            const handleTouchMove = (e) => {
+                setTouchEnd(e.targetTouches[0].clientX);
+            };
+
+            const handleTouchEnd = () => {
+                if (!touchStart || !touchEnd) return;
+                
+                const distance = touchStart - touchEnd;
+                const isLeftSwipe = distance > 50;
+                const isRightSwipe = distance < -50;
+
+                if (isLeftSwipe) {
+                    nextSlide();
+                }
+                if (isRightSwipe) {
+                    prevSlide();
+                }
+            };
+
+            useEffect(() => {
+                const handleKeyDown = (event) => {
+                    if (event.key === 'ArrowLeft') {
+                        event.preventDefault();
+                        prevSlide();
+                    } else if (event.key === 'ArrowRight') {
+                        event.preventDefault();
+                        nextSlide();
+                    }
+                };
+
+                window.addEventListener('keydown', handleKeyDown);
+                return () => {
+                    window.removeEventListener('keydown', handleKeyDown);
+                };
+            }, []);
+
+            const handleScreenClick = (e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const screenWidth = rect.width;
+                
+                if (clickX < screenWidth / 2) {
+                    prevSlide();
+                } else {
+                    nextSlide();
+                }
+            };
+
+            const handleWheel = (e) => {
                 e.preventDefault();
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                nextSlide();
-            }
-        });
+                if (e.deltaY > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            };
 
-        // 点击事件处理（排除控制栏区域）
-        document.addEventListener('click', function(e) {
-            // 如果点击的是控制栏或导航按钮，不处理翻页
-            if (e.target.closest('.control-bar') || e.target.closest('.nav-btn')) {
-                return;
-            }
-            
-            if (isTransitioning) return;
-            
-            const rect = document.body.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const width = rect.width;
-            
-            if (clickX < width / 2) {
-                prevSlide();
-            } else {
-                nextSlide();
-            }
-        });
+            const renderSlide = (slide) => {
+                switch (slide.type) {
+                    case 'cover':
+                        return React.createElement('div', {
+                            className: `${slide.background} text-white h-full flex flex-col justify-center items-center p-4 relative overflow-hidden transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`
+                        }, [
+                            React.createElement('h1', {
+                                key: 'title',
+                                className: `text-3xl md:text-4xl font-bold text-center mb-6 relative z-10 px-4 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, slide.title),
+                            React.createElement('p', {
+                                key: 'subtitle',
+                                className: `text-lg md:text-xl text-center text-blue-200 relative z-10 mb-4 px-4 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, slide.subtitle),
+                            React.createElement('div', {
+                                key: 'divider',
+                                className: `mt-4 text-orange-400 relative z-10 mb-6 transition-all duration-500 ease-out delay-200 ${isTransitioning ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`
+                            }, React.createElement('div', { className: 'w-16 h-1 bg-orange-400 mx-auto' })),
+                            slide.quote && React.createElement('div', {
+                                key: 'quote',
+                                className: `relative z-10 text-center px-4 transition-all duration-500 ease-out delay-300 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, React.createElement('p', {
+                                className: 'text-sm md:text-base text-orange-200 font-medium leading-relaxed whitespace-pre-line'
+                            }, slide.quote))
+                        ]);
 
-        // 防止页面缩放
-        document.addEventListener('gesturestart', function(e) {
-            e.preventDefault();
-        });
+                    case 'summary':
+                        return React.createElement('div', {
+                            ref: scrollContainerRef,
+                            className: `bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`,
+                            style: { scrollBehavior: 'smooth', overscrollBehavior: 'none' }
+                        }, React.createElement('div', { className: 'p-4' }, [
+                            React.createElement('h1', {
+                                key: 'title',
+                                className: `text-3xl font-bold text-center mb-4 text-orange-400 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, slide.title),
+                            React.createElement('p', {
+                                key: 'subtitle',
+                                className: `text-base text-center mb-6 text-slate-300 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, slide.subtitle),
+                            React.createElement('div', {
+                                key: 'replacements',
+                                className: 'space-y-3 mb-6'
+                            }, slide.replacements.map((item, index) => 
+                                React.createElement('div', {
+                                    key: index,
+                                    className: `bg-slate-800 rounded-lg p-4 border border-slate-700 transition-all duration-500 ease-out ${isTransitioning ? 'translate-x-4 opacity-0' : 'translate-x-0 opacity-100'}`,
+                                    style: { transitionDelay: `${index * 100 + 200}ms` }
+                                }, React.createElement('div', { className: 'flex items-center justify-between' }, [
+                                    React.createElement('div', {
+                                        key: 'content',
+                                        className: 'flex items-center'
+                                    }, [
+                                        React.createElement('div', {
+                                            key: 'icon',
+                                            className: 'text-2xl mr-3'
+                                        }, item.icon),
+                                        React.createElement('div', { key: 'text' }, [
+                                            React.createElement('h3', {
+                                                key: 'position',
+                                                className: 'text-base font-bold text-orange-400'
+                                            }, item.position),
+                                            React.createElement('p', {
+                                                key: 'module',
+                                                className: 'text-xs text-slate-300'
+                                            }, item.module)
+                                        ])
+                                    ]),
+                                    React.createElement(ArrowRight, {
+                                        key: 'arrow',
+                                        className: 'w-5 h-5 text-slate-400'
+                                    })
+                                ]))
+                            )),
+                            React.createElement('div', {
+                                key: 'conclusion',
+                                className: `bg-gradient-to-r from-orange-900/50 to-blue-900/50 border border-orange-500 rounded-lg p-4 transition-all duration-500 ease-out delay-700 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, React.createElement('pre', {
+                                className: 'text-center text-sm leading-relaxed whitespace-pre-line text-orange-200'
+                            }, slide.conclusion))
+                        ]));
 
-        document.addEventListener('gesturechange', function(e) {
-            e.preventDefault();
-        });
+                    case 'workflow':
+                        return React.createElement('div', {
+                            ref: scrollContainerRef,
+                            className: `bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`,
+                            style: { scrollBehavior: 'smooth', overscrollBehavior: 'none' }
+                        }, React.createElement('div', { className: 'p-4' }, [
+                            React.createElement('h1', {
+                                key: 'title',
+                                className: `text-2xl font-bold text-center mb-3 text-orange-400 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, slide.title),
+                            React.createElement('p', {
+                                key: 'subtitle',
+                                className: `text-sm text-center mb-6 text-slate-300 px-2 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, slide.subtitle),
+                            React.createElement('div', {
+                                key: 'steps',
+                                className: 'space-y-4'
+                            }, slide.steps.map((step, index) => [
+                                React.createElement('div', {
+                                    key: `step-${index}`,
+                                    className: `bg-slate-800 rounded-lg p-4 border border-slate-700 text-center transition-all duration-500 ease-out ${isTransitioning ? 'translate-x-4 opacity-0' : 'translate-x-0 opacity-100'}`,
+                                    style: { transitionDelay: `${index * 150 + 200}ms` }
+                                }, [
+                                    React.createElement('div', {
+                                        key: 'number',
+                                        className: 'w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-white font-bold'
+                                    }, index + 1),
+                                    React.createElement('h3', {
+                                        key: 'name',
+                                        className: 'text-base font-bold mb-2 text-orange-400'
+                                    }, step.name),
+                                    React.createElement('p', {
+                                        key: 'desc',
+                                        className: 'text-sm text-slate-300'
+                                    }, step.desc)
+                                ]),
+                                index < slide.steps.length - 1 && React.createElement('div', {
+                                    key: `arrow-${index}`,
+                                    className: 'flex justify-center mt-3'
+                                }, React.createElement(ArrowRight, { className: 'w-6 h-6 text-orange-400 rotate-90' }))
+                            ]).flat())
+                        ]));
 
-        document.addEventListener('gestureend', function(e) {
-            e.preventDefault();
-        });
+                    case 'comparison':
+                        return React.createElement('div', {
+                            ref: scrollContainerRef,
+                            className: `bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`,
+                            style: { scrollBehavior: 'smooth', overscrollBehavior: 'none' }
+                        }, React.createElement('div', { className: 'p-4' }, [
+                            React.createElement('h1', {
+                                key: 'title',
+                                className: `text-xl font-bold text-center mb-4 text-orange-400 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, slide.title),
+                            React.createElement('div', {
+                                key: 'comparison',
+                                className: 'space-y-4'
+                            }, [
+                                React.createElement('div', {
+                                    key: 'left',
+                                    className: `bg-slate-800 rounded-lg p-4 border-2 border-orange-500 transition-all duration-500 ease-out delay-200 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                                }, [
+                                    React.createElement('div', {
+                                        key: 'header',
+                                        className: `${slide.leftSide.color} text-white p-3 rounded-lg mb-4`
+                                    }, [
+                                        React.createElement('h2', {
+                                            key: 'title',
+                                            className: 'text-lg font-bold'
+                                        }, slide.leftSide.title),
+                                        slide.leftSide.subtitle && React.createElement('p', {
+                                            key: 'subtitle',
+                                            className: 'text-xs text-orange-100 mt-1 font-medium'
+                                        }, slide.leftSide.subtitle)
+                                    ]),
+                                    React.createElement('div', {
+                                        key: 'features',
+                                        className: 'space-y-3 mb-4'
+                                    }, slide.leftSide.features.map((feature, idx) =>
+                                        React.createElement('div', {
+                                            key: idx,
+                                            className: 'bg-slate-700/30 rounded-lg p-3 border border-slate-600/30'
+                                        }, React.createElement('div', { className: 'flex items-start' }, [
+                                            React.createElement(CheckCircle, {
+                                                key: 'check',
+                                                className: 'w-4 h-4 text-green-400 mr-2 flex-shrink-0 mt-0.5'
+                                            }),
+                                            React.createElement('span', {
+                                                key: 'text',
+                                                className: 'text-xs leading-relaxed text-slate-300'
+                                            }, feature)
+                                        ]))
+                                    )),
+                                    React.createElement('div', {
+                                        key: 'advantage',
+                                        className: 'bg-orange-900/30 border border-orange-500 rounded-lg p-3'
+                                    }, React.createElement('p', {
+                                        className: 'text-orange-300 font-medium text-xs'
+                                    }, slide.leftSide.advantage))
+                                ]),
+                                React.createElement('div', {
+                                    key: 'right',
+                                    className: `bg-slate-800 rounded-lg p-4 border-2 border-gray-500 transition-all duration-500 ease-out delay-400 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                                }, [
+                                    React.createElement('div', {
+                                        key: 'header',
+                                        className: `${slide.rightSide.color} text-white p-3 rounded-lg mb-4`
+                                    }, React.createElement('h2', {
+                                        className: 'text-lg font-bold'
+                                    }, slide.rightSide.title)),
+                                    React.createElement('div', {
+                                        key: 'features',
+                                        className: 'space-y-3 mb-4'
+                                    }, slide.rightSide.features.map((feature, idx) =>
+                                        React.createElement('div', {
+                                            key: idx,
+                                            className: 'bg-slate-700/30 rounded-lg p-3 border border-slate-600/30'
+                                        }, React.createElement('div', { className: 'flex items-center' }, [
+                                            React.createElement(X, {
+                                                key: 'x',
+                                                className: 'w-4 h-4 text-red-400 mr-2 flex-shrink-0'
+                                            }),
+                                            React.createElement('span', {
+                                                key: 'text',
+                                                className: 'text-xs text-slate-400'
+                                            }, feature)
+                                        ]))
+                                    )),
+                                    React.createElement('div', {
+                                        key: 'disadvantage',
+                                        className: 'bg-red-900/30 border border-red-500 rounded-lg p-3'
+                                    }, React.createElement('p', {
+                                        className: 'text-red-300 font-medium text-xs'
+                                    }, slide.rightSide.disadvantage))
+                                ])
+                            ])
+                        ]));
 
-        // 防止双击缩放
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(e) {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                e.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
+                    case 'overview':
+                        return React.createElement('div', {
+                            ref: scrollContainerRef,
+                            className: `bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`,
+                            style: { scrollBehavior: 'smooth', overscrollBehavior: 'none' }
+                        }, [
+                            React.createElement('div', {
+                                key: 'header',
+                                className: `text-center p-4 pb-2 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, [
+                                React.createElement('h1', {
+                                    key: 'title',
+                                    className: 'text-xl font-bold mb-2 text-orange-400'
+                                }, slide.title),
+                                React.createElement('p', {
+                                    key: 'subtitle',
+                                    className: 'text-xs text-slate-300 tracking-wide'
+                                }, slide.subtitle)
+                            ]),
+                            React.createElement('div', {
+                                key: 'modules',
+                                className: 'space-y-3 px-3 pb-4'
+                            }, slide.modules.map((module, index) =>
+                                React.createElement('div', {
+                                    key: index,
+                                    className: `bg-slate-800 rounded-lg p-3 border border-slate-700 transition-all duration-500 ease-out ${isTransitioning ? 'translate-x-4 opacity-0' : 'translate-x-0 opacity-100'}`,
+                                    style: { transitionDelay: `${index * 100}ms` }
+                                }, [
+                                    React.createElement('div', {
+                                        key: 'header',
+                                        className: 'flex items-center mb-2 text-orange-400'
+                                    }, [
+                                        module.icon,
+                                        React.createElement('h3', {
+                                            key: 'name',
+                                            className: 'text-base font-bold ml-2'
+                                        }, module.name)
+                                    ]),
+                                    React.createElement('p', {
+                                        key: 'subtitle',
+                                        className: 'text-xs text-orange-300 mb-3 font-medium leading-tight'
+                                    }, module.subtitle),
+                                    React.createElement('div', {
+                                        key: 'features',
+                                        className: 'space-y-2'
+                                    }, module.keyFeatures.map((feature, idx) =>
+                                        React.createElement('div', {
+                                            key: idx,
+                                            className: 'bg-slate-700/30 rounded-lg p-2 border border-slate-600/30'
+                                        }, React.createElement('div', { className: 'flex items-start' }, [
+                                            React.createElement(CheckCircle, {
+                                                key: 'check',
+                                                className: 'w-3 h-3 text-green-400 mr-2 flex-shrink-0 mt-0.5'
+                                            }),
+                                            React.createElement('div', {
+                                                key: 'content',
+                                                className: 'flex-1'
+                                            }, typeof feature === 'object' ? [
+                                                React.createElement('h4', {
+                                                    key: 'title',
+                                                    className: 'text-orange-200 font-semibold text-xs mb-1 leading-tight'
+                                                }, feature.title),
+                                                React.createElement('p', {
+                                                    key: 'desc',
+                                                    className: 'text-slate-300 text-xs leading-relaxed'
+                                                }, feature.desc)
+                                            ] : React.createElement('span', {
+                                                className: 'text-xs text-slate-300 leading-relaxed'
+                                            }, feature))
+                                        ]))
+                                    ))
+                                ])
+                            ))
+                        ]);
 
-        // 初始化显示第一张幻灯片
-        showSlide(0);
+                    case 'ending':
+                        return React.createElement('div', {
+                            ref: scrollContainerRef,
+                            className: `bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`,
+                            style: { scrollBehavior: 'smooth', overscrollBehavior: 'none' }
+                        }, React.createElement('div', { className: 'p-4' }, [
+                            React.createElement('div', {
+                                key: 'main',
+                                className: `text-center mb-6 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, [
+                                React.createElement('h1', {
+                                    key: 'title',
+                                    className: 'text-3xl font-bold mb-3 text-orange-400'
+                                }, slide.title),
+                                React.createElement('p', {
+                                    key: 'subtitle',
+                                    className: 'text-base text-slate-300 mb-4'
+                                }, slide.subtitle),
+                                React.createElement('p', {
+                                    key: 'content',
+                                    className: 'text-sm text-orange-200 leading-relaxed px-2'
+                                }, slide.content)
+                            ]),
+                            React.createElement('div', {
+                                key: 'highlights',
+                                className: 'mb-6'
+                            }, React.createElement('div', { className: 'grid grid-cols-2 gap-3' }, 
+                                slide.highlights.map((item, index) =>
+                                    React.createElement('div', {
+                                        key: index,
+                                        className: `bg-slate-800 rounded-lg p-3 border border-slate-700 text-center transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`,
+                                        style: { transitionDelay: `${index * 100 + 200}ms` }
+                                    }, [
+                                        React.createElement('h3', {
+                                            key: 'title',
+                                            className: 'text-sm font-bold text-orange-400 mb-2'
+                                        }, item.title),
+                                        React.createElement('p', {
+                                            key: 'desc',
+                                            className: 'text-slate-300 text-xs leading-relaxed'
+                                        }, item.desc)
+                                    ])
+                                )
+                            )),
+                            React.createElement('div', {
+                                key: 'value',
+                                className: `mb-6 transition-all duration-500 ease-out delay-500 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, React.createElement('div', { className: 'bg-slate-800 rounded-lg border-2 border-orange-400 p-4' }, [
+                                React.createElement('div', {
+                                    key: 'header',
+                                    className: 'text-center mb-4'
+                                }, React.createElement('div', { className: 'flex items-center justify-center mb-2' }, [
+                                    React.createElement(Brain, {
+                                        key: 'brain1',
+                                        className: 'w-5 h-5 text-orange-400 mr-2'
+                                    }),
+                                    React.createElement('h3', {
+                                        key: 'title',
+                                        className: 'text-lg font-bold text-orange-400'
+                                    }, slide.additionalContent.title),
+                                    React.createElement(Brain, {
+                                        key: 'brain2',
+                                        className: 'w-5 h-5 text-orange-400 ml-2'
+                                    })
+                                ])),
+                                React.createElement('div', {
+                                    key: 'content',
+                                    className: 'text-center space-y-3'
+                                }, [
+                                    React.createElement('p', {
+                                        key: 'value',
+                                        className: 'text-base text-orange-200 font-medium leading-relaxed'
+                                    }, slide.additionalContent.systemValue),
+                                    React.createElement('p', {
+                                        key: 'management',
+                                        className: 'text-sm text-blue-200 leading-relaxed'
+                                    }, slide.additionalContent.management),
+                                    React.createElement('div', {
+                                        key: 'development',
+                                        className: 'flex items-center justify-center pt-2'
+                                    }, React.createElement('div', { className: 'flex items-center' }, [
+                                        React.createElement(Sparkles, {
+                                            key: 'sparkle1',
+                                            className: 'w-4 h-4 text-orange-400 mr-2 animate-pulse'
+                                        }),
+                                        React.createElement('span', {
+                                            key: 'text',
+                                            className: 'text-orange-300 font-medium text-sm'
+                                        }, slide.additionalContent.development),
+                                        React.createElement(Sparkles, {
+                                            key: 'sparkle2',
+                                            className: 'w-4 h-4 text-orange-400 ml-2 animate-pulse'
+                                        })
+                                    ]))
+                                ])
+                            ])),
+                            React.createElement('div', {
+                                key: 'cta',
+                                className: `text-center transition-all duration-500 ease-out delay-700 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`
+                            }, React.createElement('div', { className: 'inline-flex items-center bg-gradient-to-r from-orange-500 to-blue-500 text-white px-4 py-3 rounded-lg text-sm font-bold' }, [
+                                React.createElement(Brain, {
+                                    key: 'brain',
+                                    className: 'w-5 h-5 mr-2'
+                                }),
+                                React.createElement('span', {
+                                    key: 'text',
+                                    className: 'leading-tight'
+                                }, 'AI时代，让智能成为你的竞争优势'),
+                                React.createElement(Sparkles, {
+                                    key: 'sparkle',
+                                    className: 'w-5 h-5 ml-2'
+                                })
+                            ]))
+                        ]));
 
-        // 页面加载完成后确保正确显示
-        window.addEventListener('load', function() {
-            showSlide(0);
-        });
+                    default:
+                        return React.createElement('div', {
+                            className: 'bg-slate-900 text-white h-full flex items-center justify-center'
+                        }, '幻灯片内容');
+                }
+            };
+
+            return React.createElement('div', {
+                className: 'w-full h-screen bg-black flex flex-col max-w-md mx-auto',
+                style: { overscrollBehavior: 'none' }
+            }, [
+                React.createElement('div', {
+                    key: 'content',
+                    className: 'flex-1 relative cursor-pointer select-none overflow-hidden',
+                    onClick: handleScreenClick,
+                    onWheel: handleWheel,
+                    onTouchStart: handleTouchStart,
+                    onTouchMove: handleTouchMove,
+                    onTouchEnd: handleTouchEnd,
+                    style: { cursor: 'pointer', overscrollBehavior: 'none' }
+                }, [
+                    renderSlide(slides[currentSlide]),
+                    React.createElement('div', {
+                        key: 'left-hint',
+                        className: `absolute left-0 top-0 w-1/2 h-full z-10 flex items-center justify-start pl-4 opacity-0 hover:opacity-100 transition-opacity pointer-events-none ${isTransitioning ? 'opacity-0' : ''}`
+                    }, React.createElement('div', { className: 'bg-black/70 rounded-full p-2' },
+                        React.createElement(ChevronLeft, { className: 'w-6 h-6 text-white' })
+                    )),
+                    React.createElement('div', {
+                        key: 'right-hint',
+                        className: `absolute right-0 top-0 w-1/2 h-full z-10 flex items-center justify-end pr-4 opacity-0 hover:opacity-100 transition-opacity pointer-events-none ${isTransitioning ? 'opacity-0' : ''}`
+                    }, React.createElement('div', { className: 'bg-black/70 rounded-full p-2' },
+                        React.createElement(ChevronRight, { className: 'w-6 h-6 text-white' })
+                    ))
+                ]),
+                React.createElement('div', {
+                    key: 'controls',
+                    className: 'bg-slate-800 text-white p-2 flex items-center justify-between'
+                }, [
+                    React.createElement('span', {
+                        key: 'counter',
+                        className: 'text-xs'
+                    }, `${currentSlide + 1} / ${slides.length}`),
+                    React.createElement('div', {
+                        key: 'nav',
+                        className: 'flex space-x-1'
+                    }, slides.map((_, index) =>
+                        React.createElement('button', {
+                            key: index,
+                            onClick: (e) => {
+                                e.stopPropagation();
+                                goToSlide(index);
+                            },
+                            disabled: isTransitioning,
+                            className: `w-2 h-2 rounded-full transition-all duration-300 ${
+                                index === currentSlide ? 'bg-orange-400 scale-125' : 'bg-slate-600 hover:bg-slate-500'
+                            } ${isTransitioning ? 'opacity-50' : 'opacity-100'}`
+                        })
+                    )),
+                    React.createElement('span', {
+                        key: 'hint',
+                        className: 'text-xs text-slate-400'
+                    }, '滑动翻页')
+                ])
+            ]);
+        };
+
+        const App = () => {
+            return React.createElement(PPTDemo);
+        };
+
+        ReactDOM.render(React.createElement(App), document.getElementById('root'));
     </script>
 </body>
 </html>
