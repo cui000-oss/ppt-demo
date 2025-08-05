@@ -1,2 +1,803 @@
-# ppt-demo
-糯米AI PPT演示
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Zap, Users, Megaphone, Share2, Video, ArrowRight, CheckCircle, X, Brain, Sparkles, Settings, Cog } from 'lucide-react';
+
+const PPTDemo = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  // 添加滚动容器引用
+  const scrollContainerRef = useRef(null);
+
+  const slides = [
+    // 封面页 - 添加了新的金句
+    {
+      type: 'cover',
+      title: '糯米AI vs 传统工具全面对比',
+      subtitle: '从单点解决到全链路智能化',
+      quote: '好的AI系统 = 10年经验的老员工\n一个眼神就心领神会，无需繁琐培训和反复沟通',
+      background: 'bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800'
+    },
+    // 第2页：全链路闭环系统 - 压缩版本
+    {
+      type: 'workflow',
+      title: '全链路闭环系统',
+      subtitle: '从公域引流到私域自动化成交的完整解决方案',
+      steps: [
+        { name: '公域引流', desc: '线上运营组+短视频编导组' },
+        { name: '内容生产', desc: '文案编导组+直播组' },
+        { name: '私域转化', desc: '私域运营组+自动化SOP' },
+        { name: '持续运营', desc: '全模块协同工作' }
+      ]
+    },
+    // 第3页：总结页（原第9页内容）
+    {
+      type: 'summary',
+      title: '糯米AI = 替代整个部门',
+      subtitle: '一套系统，多岗位智能化替代',
+      replacements: [
+        { position: '文案岗', module: '文案编导组', icon: '✍️' },
+        { position: '剪辑岗', module: '短视频编导组', icon: '🎬' },
+        { position: '直播策划岗', module: '直播组', icon: '📺' },
+        { position: '运营岗', module: '线上运营组', icon: '📈' },
+        { position: '销售岗', module: '私域运营组', icon: '💼' }
+      ],
+      conclusion: '传统方案：多个工具 + 多个岗位 + 高成本\n糯米AI：一套系统解决全链路需求'
+    },
+    // 第4页：功能总览页 - 手机版改为1列布局
+    {
+      type: 'overview',
+      title: '糯米AI五大功能模块',
+      subtitle: 'From single-point solutions to end-to-end intelligentization',
+      modules: [
+        {
+          icon: <Zap className="w-5 h-5" />,
+          name: '文案编导组 (1)',
+          subtitle: '秒出获客文案（1天1人完成3人1月工作量）',
+          keyFeatures: [
+            {
+              title: '给主题撰写文案',
+              desc: '输入主题、话题，1分钟生成完整钩子文案，零基础也能写出专业内容，吸引精准客户'
+            },
+            {
+              title: '长文章改写爆款文案',
+              desc: '粘贴长文，秒变爆款短文案，省去手动精简的繁琐过程'
+            },
+            {
+              title: '文案润色行业爆款',
+              desc: '导入现有文案，想法描述，瞬间提升专业度和吸引力，让平庸文案变出彩'
+            },
+            {
+              title: '给主题生成文案（教培专用）',
+              desc: '教培行业专用，输入主题即可快速获得精准获客文案，深度契合家长心理'
+            },
+            {
+              title: '长文案设计师（给主题）',
+              desc: '给个主题，自动AI展成完整长文案，结构清晰逻辑完整'
+            }
+          ]
+        },
+        {
+          icon: <Zap className="w-5 h-5" />,
+          name: '文案编导组 (2)',
+          subtitle: '更多专业文案功能',
+          keyFeatures: [
+            {
+              title: '爆款文案跨行改写师',
+              desc: '复制其他行业爆款文案，保持结构写作技巧，智能改写成你的行业文案内容，成功经验轻松复制'
+            },
+            {
+              title: '爆款黄金开头（16种）',
+              desc: '给任主题、话题，瞬间生成吸睛开头，3秒抓住用户注意力，师凝客户'
+            },
+            {
+              title: '三点式干货文案',
+              desc: '输入主题、话题，自动整理成三要点结构，逻辑清晰，轻松搞定，用户记忆深刻'
+            },
+            {
+              title: '流量型文案',
+              desc: '专门优化流量获取，快速生成高传播文案，算法友容易推荐'
+            },
+            {
+              title: '抖红视爆款文案生成',
+              desc: '选择平台，批量生成对应机制的流量文案，适配所有主流平台，一次创作多平台使用'
+            }
+          ]
+        },
+        {
+          icon: <Video className="w-5 h-5" />,
+          name: '短视频编导组',
+          subtitle: '短视频获客蓝海工厂（一人顶一个视频团队）',
+          keyFeatures: [
+            {
+              title: 'AI数字人',
+              desc: '输入文案脚本，自动生成数字人播报视频，告别真人出镜、拍摄、剪辑、画面、表现力不足等各种限制'
+            },
+            {
+              title: '短阵系统',
+              desc: '智能管理多个短视频账号，统一内容发布，放大流量获取效果'
+            },
+            {
+              title: '视频包装精剪',
+              desc: '自动为视频添加字幕、转场、音效等包装元素，剪辑不求人'
+            }
+          ]
+        },
+        {
+          icon: <Megaphone className="w-5 h-5" />,
+          name: '直播组',
+          subtitle: '高转化直播内容生产（让直播间成交翻10倍）',
+          keyFeatures: [
+            {
+              title: '直播稿拆解',
+              desc: '输入竞品直播稿，智能拆解成交逻辑和话术技巧，复制成功直播间的转化密码'
+            },
+            {
+              title: '直播稿框架',
+              desc: '选择直播类型，自动生成完整直播稿框架，新手也能搭建专业直播流程'
+            }
+          ]
+        },
+        {
+          icon: <Share2 className="w-5 h-5" />,
+          name: '线上运营组',
+          subtitle: '全域流量获客系统（从0到1建立获客机器）',
+          keyFeatures: [
+            {
+              title: '线上定位大师',
+              desc: '输入行业信息，筛选找到你的差异化定位，9套定位分析，解决同质化竞争难题'
+            },
+            {
+              title: '引流钩子设计师',
+              desc: '根据目标客户画像，批量生成吸引精准用户的引流钩子，提升获客效率'
+            },
+            {
+              title: '封面钩子文生图设计师',
+              desc: '输入文案描述，自动生成高点击率的封面图片，视觉冲击力拉满'
+            },
+            {
+              title: '封面标题生成器',
+              desc: '结合主题内容，瞬间生成多个爆款标题选项，标题党必备神器'
+            },
+            {
+              title: 'AI海报',
+              desc: '输入图片信息，自动设计专业海报画面，设计0成本'
+            }
+          ]
+        },
+        {
+          icon: <Users className="w-5 h-5" />,
+          name: '私域运营组',
+          subtitle: '变现收割机（让你月业绩快速成交）',
+          keyFeatures: [
+            {
+              title: '朋友圈大师（10种）',
+              desc: '输入想表达的内容，生成朋友圈适用的10种不同类型的高转化朋友圈文案，覆盖日常到刺激转化的全场景，避免刷屏引起反感'
+            },
+            {
+              title: '私域SOP策划师',
+              desc: '私域SOP运营，制定完整的社群维护流程，详细运营人群时群转化完整链运的时间线，缓致到话术及排版'
+            },
+            {
+              title: 'SOP补充话术',
+              desc: '针对现有标准化流程，实现社群维护，补充时间节，以及关键节点的话术准备时期护定，提升转化效果'
+            }
+          ]
+        }
+      ]
+    },
+    // 单项对比页1 - 文案编导组 - 手机版上下布局
+    {
+      type: 'comparison',
+      title: '文案编导组对比',
+      leftSide: {
+        title: '糯米AI - 文案编导组',
+        subtitle: '秒出获客文案（1天1人完成一3人1月的工作做量）',
+        color: 'bg-orange-500',
+        features: [
+          '给主题撰写文案 - 1分钟生成完整钩子文案，零基础也能写出专业内容',
+          '长文章改写爆款 - 粘贴长文，秒变爆款短文案，省去手动精简',
+          '文案润色行业爆款 - 导入文案，瞬间提升专业度和吸引力',
+          '教培专用文案 - 输入主题即可快速获得精准获客文案',
+          '爆款黄金开头 - 16种开头，3秒抓住用户注意力',
+          '抖红视爆款文案 - 选择平台，批量生成对应机制的流量文案'
+        ],
+        advantage: '🚀 超高效率：一天一人完成3人一月的工作量，专业文案团队10年经验'
+      },
+      rightSide: {
+        title: 'DeepSeek',
+        color: 'bg-gray-500',
+        features: ['基础文案生成', '简单改写功能', '通用模板应用', '需要详细提示词', '缺乏行业针对性', '无主动交互'],
+        disadvantage: '❌ 被动生成，需要反复调试，缺乏专业理解'
+      }
+    },
+    // 单项对比页2 - 短视频编导组 - 手机版上下布局
+    {
+      type: 'comparison',
+      title: '短视频编导组对比',
+      leftSide: {
+        title: '糯米AI - 短视频编导组',
+        subtitle: '短视频获客蓝海工厂（一人顶一个视频团队）',
+        color: 'bg-orange-500',
+        features: [
+          'AI数字人 - 输入文案脚本，自动生成数字人播报视频，告别真人出镜限制',
+          '短阵系统 - 智能管理多个短视频账号，统一内容发布，放大流量获取效果',
+          '视频包装精剪 - 自动为视频添加字幕、转场、音效等包装元素，剪辑不求人'
+        ],
+        advantage: '🎬 革命性创新：无需拍摄，一键生成专业视频内容'
+      },
+      rightSide: {
+        title: '剪映',
+        color: 'bg-gray-500',
+        features: ['需要拍摄素材', '手动剪辑', '删除错误片段', '剪气口处理', '时间消耗大', '需要专业技能'],
+        disadvantage: '⏱️ 传统流程：拍摄→剪辑→修正，耗时耗力'
+      }
+    },
+    // 单项对比页3 - 直播组 - 手机版上下布局
+    {
+      type: 'comparison',
+      title: '直播组对比',
+      leftSide: {
+        title: '糯米AI - 直播组',
+        subtitle: '高转化直播内容生产（让你的直播间成交翻10倍）',
+        color: 'bg-orange-500',
+        features: [
+          '直播稿拆解 - 输入竞品直播稿，智能拆解成交逻辑和话术技巧，复制成功直播间的转化密码',
+          '直播稿框架 - 选择直播类型，自动生成完整直播稿框架，新手也能搭建专业直播流程'
+        ],
+        advantage: '🎯 深度理解直播逻辑，提供完整直播解决方案'
+      },
+      rightSide: {
+        title: '传统直播脚本工具',
+        color: 'bg-gray-500',
+        features: ['基础脚本模板', '简单话术库', '静态框架', '需要手动调整', '缺乏个性化', '无优化建议'],
+        disadvantage: '📝 只提供模板，缺乏智能化和个性化指导'
+      }
+    },
+    // 单项对比页4 - 线上运营组 - 手机版上下布局
+    {
+      type: 'comparison',
+      title: '线上运营组对比',
+      leftSide: {
+        title: '糯米AI - 线上运营组',
+        subtitle: '全域流量获客系统（从0到1建立线上获客机器）',
+        color: 'bg-orange-500',
+        features: [
+          '线上定位大师 - 输入行业信息，筛选找到差异化定位，9套定位分析',
+          '引流钩子设计师 - 批量生成吸引精准用户的引流钩子，提升获客效率',
+          '封面钩子文生图设计师 - 输入文案描述，自动生成高点击率的封面图片',
+          '封面标题生成器 - 结合主题内容，瞬间生成多个爆款标题选项',
+          'AI海报 - 输入图片信息，自动设计专业海报画面，设计0成本'
+        ],
+        advantage: '🚀 全链路运营思维，从定位到转化的完整方案'
+      },
+      rightSide: {
+        title: '单一功能工具',
+        color: 'bg-gray-500',
+        features: ['单独海报生成', '基础SOP模板', '简单素材库', '功能分散', '需要多工具协作', '缺乏整体规划'],
+        disadvantage: '🔧 功能割裂，需要多个工具拼凑，缺乏系统性'
+      }
+    },
+    // 单项对比页5 - 私域运营组 - 手机版上下布局
+    {
+      type: 'comparison',
+      title: '私域运营对比',
+      leftSide: {
+        title: '糯米AI - 私域运营组',
+        subtitle: '变现收割机（让你月业绩成交）',
+        color: 'bg-orange-500',
+        features: [
+          '朋友圈大师（10种） - 生成10种不同类型的高转化朋友圈文案，覆盖全场景',
+          '私域SOP策划师 - 制定完整的社群维护流程，详细运营时间线和话术',
+          'SOP补充话术 - 针对现有流程，补充关键节点的话术准备，提升转化效果'
+        ],
+        advantage: '💬 深度理解私域运营，提供个性化运营策略'
+      },
+      rightSide: {
+        title: '朋友圈文案工具',
+        color: 'bg-gray-500',
+        features: [
+          '文案素材库',
+          '基础模板',
+          '手动提取',
+          '缺乏策略指导',
+          '无自动化'
+        ],
+        disadvantage: '📱 只提供素材，缺乏专业化运营能力'
+      }
+    },
+    // 第10页：运营思维升级 - 结尾页面（手机版）
+    {
+      type: 'ending',
+      title: '运营思维升级',
+      subtitle: '糯米AI带来的不仅仅是工具升级',
+      content: '不只是工具的替换，更是企业运营思维的升级。让每个企业都能享受到AI时代的红利，实现真正的数字化转型和智能化运营。',
+      highlights: [
+        { title: '思维升级', desc: '从单点工具到全链路思维' },
+        { title: 'AI红利', desc: '享受人工智能时代的发展机遇' },
+        { title: '数字化转型', desc: '实现企业全面数字化升级' },
+        { title: '智能化运营', desc: '让AI成为企业运营的核心驱动力' }
+      ],
+      // 修改后的内容
+      additionalContent: {
+        title: 'AI系统价值',
+        systemValue: '一套AI系统承载整个企业的运营流程，打造永动的商业引擎。',
+        management: '标准化管理，让系统更落地更实用。',
+        development: '持续优化升级中······'
+      }
+    }
+  ];
+
+  // 修改翻页函数，增加滚动重置功能
+  const nextSlide = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+      // 重置滚动位置到顶部
+      resetScrollPosition();
+      setIsTransitioning(false);
+    }, 150);
+  };
+
+  const prevSlide = () => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+      // 重置滚动位置到顶部
+      resetScrollPosition();
+      setIsTransitioning(false);
+    }, 150);
+  };
+
+  const goToSlide = (index) => {
+    if (isTransitioning || index === currentSlide) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentSlide(index);
+      // 重置滚动位置到顶部
+      resetScrollPosition();
+      setIsTransitioning(false);
+    }, 150);
+  };
+
+  // 新增滚动位置重置函数
+  const resetScrollPosition = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  };
+
+  // 触摸滑动处理
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    }
+    if (isRightSwipe) {
+      prevSlide();
+    }
+  };
+
+  // 键盘事件监听
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        prevSlide();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        nextSlide();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  // 处理屏幕点击翻页
+  const handleScreenClick = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const screenWidth = rect.width;
+    
+    if (clickX < screenWidth / 2) {
+      prevSlide();
+    } else {
+      nextSlide();
+    }
+  };
+
+  // 鼠标滚轮事件处理
+  const handleWheel = (e) => {
+    e.preventDefault();
+    if (e.deltaY > 0) {
+      nextSlide();
+    } else {
+      prevSlide();
+    }
+  };
+
+  const renderSlide = (slide) => {
+    switch (slide.type) {
+      case 'cover':
+        return (
+          <div className={`${slide.background} text-white h-full flex flex-col justify-center items-center p-4 relative overflow-hidden transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-10 left-10 w-16 h-16 border border-white/20 rotate-45"></div>
+              <div className="absolute bottom-10 right-10 w-12 h-12 border border-white/20 rotate-12"></div>
+              <div className="absolute top-1/2 left-5 w-8 h-8 border border-white/20 rotate-45"></div>
+            </div>
+            <h1 className={`text-3xl md:text-4xl font-bold text-center mb-6 relative z-10 px-4 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.title}</h1>
+            <p className={`text-lg md:text-xl text-center text-blue-200 relative z-10 mb-4 px-4 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.subtitle}</p>
+            <div className={`mt-4 text-orange-400 relative z-10 mb-6 transition-all duration-500 ease-out delay-200 ${isTransitioning ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}>
+              <div className="w-16 h-1 bg-orange-400 mx-auto"></div>
+            </div>
+            {slide.quote && (
+              <div className={`relative z-10 text-center px-4 transition-all duration-500 ease-out delay-300 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                <p className="text-sm md:text-base text-orange-200 font-medium leading-relaxed whitespace-pre-line">
+                  {slide.quote}
+                </p>
+              </div>
+            )}
+          </div>
+        );
+
+      case 'overview':
+        return (
+          <div 
+            ref={scrollContainerRef}
+            className={`bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`}
+            style={{
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'none',
+            }}
+          >
+            <div className={`text-center p-4 pb-2 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+              <h1 className="text-xl font-bold mb-2 text-orange-400">{slide.title}</h1>
+              <p className="text-xs text-slate-300 tracking-wide">{slide.subtitle}</p>
+            </div>
+            
+            {/* 手机版改为单列布局 */}
+            <div className="space-y-3 px-3 pb-4">
+              {slide.modules.map((module, index) => (
+                <div key={index} className={`bg-slate-800 rounded-lg p-3 border border-slate-700 transition-all duration-500 ease-out ${isTransitioning ? 'translate-x-4 opacity-0' : 'translate-x-0 opacity-100'}`} style={{ transitionDelay: `${index * 100}ms` }}>
+                  {/* 标题区域 */}
+                  <div className="flex items-center mb-2 text-orange-400">
+                    {module.icon}
+                    <h3 className="text-base font-bold ml-2">{module.name}</h3>
+                  </div>
+                  {/* 副标题 */}
+                  <p className="text-xs text-orange-300 mb-3 font-medium leading-tight">{module.subtitle}</p>
+                  
+                  <div className="space-y-2">
+                    {module.keyFeatures.map((feature, idx) => (
+                      <div key={idx} className="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
+                        <div className="flex items-start">
+                          <CheckCircle className="w-3 h-3 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
+                          <div className="flex-1">
+                            {typeof feature === 'object' ? (
+                              <>
+                                <h4 className="text-orange-200 font-semibold text-xs mb-1 leading-tight">
+                                  {feature.title}
+                                </h4>
+                                <p className="text-slate-300 text-xs leading-relaxed">
+                                  {feature.desc}
+                                </p>
+                              </>
+                            ) : (
+                              <span className="text-xs text-slate-300 leading-relaxed">{feature}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'ending':
+        return (
+          <div 
+            ref={scrollContainerRef}
+            className={`bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
+            style={{
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'none',
+            }}
+          >
+            <div className="p-4">
+              {/* 顶部主要内容 */}
+              <div className={`text-center mb-6 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                <h1 className="text-3xl font-bold mb-3 text-orange-400">{slide.title}</h1>
+                <p className="text-base text-slate-300 mb-4">{slide.subtitle}</p>
+                <p className="text-sm text-orange-200 leading-relaxed px-2">
+                  {slide.content}
+                </p>
+              </div>
+              
+              {/* 4个核心亮点 - 手机版改为2x2网格 */}
+              <div className="mb-6">
+                <div className="grid grid-cols-2 gap-3">
+                  {slide.highlights.map((item, index) => (
+                    <div key={index} className={`bg-slate-800 rounded-lg p-3 border border-slate-700 text-center transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`} style={{ transitionDelay: `${index * 100 + 200}ms` }}>
+                      <h3 className="text-sm font-bold text-orange-400 mb-2">{item.title}</h3>
+                      <p className="text-slate-300 text-xs leading-relaxed">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* AI系统价值区域 - 手机版 */}
+              <div className={`mb-6 transition-all duration-500 ease-out delay-500 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                <div className="bg-slate-800 rounded-lg border-2 border-orange-400 p-4">
+                  {/* 标题部分 */}
+                  <div className="text-center mb-4">
+                    <div className="flex items-center justify-center mb-2">
+                      <Brain className="w-5 h-5 text-orange-400 mr-2" />
+                      <h3 className="text-lg font-bold text-orange-400">{slide.additionalContent.title}</h3>
+                      <Brain className="w-5 h-5 text-orange-400 ml-2" />
+                    </div>
+                  </div>
+                  
+                  {/* 内容部分 - 垂直排列 */}
+                  <div className="text-center space-y-3">
+                    <p className="text-base text-orange-200 font-medium leading-relaxed">
+                      {slide.additionalContent.systemValue}
+                    </p>
+                    
+                    <p className="text-sm text-blue-200 leading-relaxed">
+                      {slide.additionalContent.management}
+                    </p>
+                    
+                    <div className="flex items-center justify-center pt-2">
+                      <div className="flex items-center">
+                        <Sparkles className="w-4 h-4 text-orange-400 mr-2 animate-pulse" />
+                        <span className="text-orange-300 font-medium text-sm">
+                          {slide.additionalContent.development}
+                        </span>
+                        <Sparkles className="w-4 h-4 text-orange-400 ml-2 animate-pulse" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 底部标语 */}
+              <div className={`text-center transition-all duration-500 ease-out delay-700 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                <div className="inline-flex items-center bg-gradient-to-r from-orange-500 to-blue-500 text-white px-4 py-3 rounded-lg text-sm font-bold">
+                  <Brain className="w-5 h-5 mr-2" />
+                  <span className="leading-tight">AI时代，让智能成为你的竞争优势</span>
+                  <Sparkles className="w-5 h-5 ml-2" />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'workflow':
+        return (
+          <div 
+            ref={scrollContainerRef}
+            className={`bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`}
+            style={{
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'none',
+            }}
+          >
+            <div className="p-4">
+              <h1 className={`text-2xl font-bold text-center mb-3 text-orange-400 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.title}</h1>
+              <p className={`text-sm text-center mb-6 text-slate-300 px-2 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.subtitle}</p>
+              
+              {/* 手机版改为垂直布局 */}
+              <div className="space-y-4">
+                {slide.steps.map((step, index) => (
+                  <div key={index} className={`bg-slate-800 rounded-lg p-4 border border-slate-700 text-center transition-all duration-500 ease-out ${isTransitioning ? 'translate-x-4 opacity-0' : 'translate-x-0 opacity-100'}`} style={{ transitionDelay: `${index * 150 + 200}ms` }}>
+                    <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-3 text-white font-bold">
+                      {index + 1}
+                    </div>
+                    <h3 className="text-base font-bold mb-2 text-orange-400">{step.name}</h3>
+                    <p className="text-sm text-slate-300">{step.desc}</p>
+                    {index < slide.steps.length - 1 && (
+                      <div className="flex justify-center mt-3">
+                        <ArrowRight className="w-6 h-6 text-orange-400 rotate-90" />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              
+              <div className={`text-center mt-6 transition-all duration-500 ease-out delay-700 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                <div className="inline-block bg-orange-500 text-white px-4 py-2 rounded-lg text-sm font-bold">
+                  全链路闭环 = 系统性竞争优势
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'comparison':
+        return (
+          <div 
+            ref={scrollContainerRef}
+            className={`bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`}
+            style={{
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'none',
+            }}
+          >
+            <div className="p-4">
+              <h1 className={`text-xl font-bold text-center mb-4 text-orange-400 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.title}</h1>
+              
+              {/* 手机版改为上下布局 */}
+              <div className="space-y-4">
+                {/* 糯米AI */}
+                <div className={`bg-slate-800 rounded-lg p-4 border-2 border-orange-500 transition-all duration-500 ease-out delay-200 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                  <div className={`${slide.leftSide.color} text-white p-3 rounded-lg mb-4`}>
+                    <h2 className="text-lg font-bold">{slide.leftSide.title}</h2>
+                    {slide.leftSide.subtitle && (
+                      <p className="text-xs text-orange-100 mt-1 font-medium">{slide.leftSide.subtitle}</p>
+                    )}
+                  </div>
+                  <div className="space-y-3 mb-4">
+                    {slide.leftSide.features.map((feature, idx) => (
+                      <div key={idx} className="bg-slate-700/30 rounded-lg p-3 border border-slate-600/30">
+                        <div className="flex items-start">
+                          <CheckCircle className="w-4 h-4 text-green-400 mr-2 flex-shrink-0 mt-0.5" />
+                          <span className="text-xs leading-relaxed text-slate-300">{feature}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
+                    <p className="text-orange-300 font-medium text-xs">{slide.leftSide.advantage}</p>
+                  </div>
+                </div>
+
+                {/* 竞品 */}
+                <div className={`bg-slate-800 rounded-lg p-4 border-2 border-gray-500 transition-all duration-500 ease-out delay-400 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                  <div className={`${slide.rightSide.color} text-white p-3 rounded-lg mb-4`}>
+                    <h2 className="text-lg font-bold">{slide.rightSide.title}</h2>
+                  </div>
+                  <div className="space-y-3 mb-4">
+                    {slide.rightSide.features.map((feature, idx) => (
+                      <div key={idx} className="bg-slate-700/30 rounded-lg p-3 border border-slate-600/30">
+                        <div className="flex items-center">
+                          <X className="w-4 h-4 text-red-400 mr-2 flex-shrink-0" />
+                          <span className="text-xs text-slate-400">{feature}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="bg-red-900/30 border border-red-500 rounded-lg p-3">
+                    <p className="text-red-300 font-medium text-xs">{slide.rightSide.disadvantage}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'summary':
+        return (
+          <div 
+            ref={scrollContainerRef}
+            className={`bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
+            style={{
+              scrollBehavior: 'smooth',
+              overscrollBehavior: 'none',
+            }}
+          >
+            <div className="p-4">
+              <h1 className={`text-3xl font-bold text-center mb-4 text-orange-400 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.title}</h1>
+              <p className={`text-base text-center mb-6 text-slate-300 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.subtitle}</p>
+              
+              {/* 手机版改为单列布局 */}
+              <div className="space-y-3 mb-6">
+                {slide.replacements.map((item, index) => (
+                  <div key={index} className={`bg-slate-800 rounded-lg p-4 border border-slate-700 transition-all duration-500 ease-out ${isTransitioning ? 'translate-x-4 opacity-0' : 'translate-x-0 opacity-100'}`} style={{ transitionDelay: `${index * 100 + 200}ms` }}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="text-2xl mr-3">{item.icon}</div>
+                        <div>
+                          <h3 className="text-base font-bold text-orange-400">{item.position}</h3>
+                          <p className="text-xs text-slate-300">{item.module}</p>
+                        </div>
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-slate-400" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className={`bg-gradient-to-r from-orange-900/50 to-blue-900/50 border border-orange-500 rounded-lg p-4 transition-all duration-500 ease-out delay-700 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                <pre className="text-center text-sm leading-relaxed whitespace-pre-line text-orange-200">
+                  {slide.conclusion}
+                </pre>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return <div className="bg-slate-900 text-white h-full flex items-center justify-center">幻灯片内容</div>;
+    }
+  };
+
+  return (
+    <div className="w-full h-screen bg-black flex flex-col max-w-md mx-auto" style={{ overscrollBehavior: 'none' }}>
+      {/* PPT 内容区域 */}
+      <div 
+        className="flex-1 relative cursor-pointer select-none overflow-hidden" 
+        onClick={handleScreenClick}
+        onWheel={handleWheel}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{ cursor: 'pointer', overscrollBehavior: 'none' }}
+      >
+        {renderSlide(slides[currentSlide])}
+        
+        {/* 翻页提示区域 - 手机版 */}
+        <div className={`absolute left-0 top-0 w-1/2 h-full z-10 flex items-center justify-start pl-4 opacity-0 hover:opacity-100 transition-opacity pointer-events-none ${isTransitioning ? 'opacity-0' : ''}`}>
+          <div className="bg-black/70 rounded-full p-2">
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </div>
+        </div>
+        <div className={`absolute right-0 top-0 w-1/2 h-full z-10 flex items-center justify-end pr-4 opacity-0 hover:opacity-100 transition-opacity pointer-events-none ${isTransitioning ? 'opacity-0' : ''}`}>
+          <div className="bg-black/70 rounded-full p-2">
+            <ChevronRight className="w-6 h-6 text-white" />
+          </div>
+        </div>
+      </div>
+
+      {/* 底部控制栏 - 手机版简化 */}
+      <div className="bg-slate-800 text-white p-2 flex items-center justify-between">
+        <span className="text-xs">
+          {currentSlide + 1} / {slides.length}
+        </span>
+        
+        {/* 幻灯片缩略图导航 */}
+        <div className="flex space-x-1">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToSlide(index);
+              }}
+              disabled={isTransitioning}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentSlide ? 'bg-orange-400 scale-125' : 'bg-slate-600 hover:bg-slate-500'
+              } ${isTransitioning ? 'opacity-50' : 'opacity-100'}`}
+            />
+          ))}
+        </div>
+        
+        <span className="text-xs text-slate-400">滑动翻页</span>
+      </div>
+    </div>
+  );
+};
+
+export default PPTDemo;
