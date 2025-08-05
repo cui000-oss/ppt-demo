@@ -9,7 +9,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
             overflow: hidden;
         }
         .slide {
@@ -20,6 +20,27 @@
         }
         .slide-transition {
             transition: all 0.3s ease-in-out;
+        }
+        /* 确保emoji彩色显示 */
+        .emoji {
+            font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+            color: inherit;
+            text-shadow: none;
+            filter: none;
+            font-weight: normal;
+        }
+        /* 图标样式 */
+        .icon {
+            display: inline-block;
+            width: 1.2em;
+            height: 1.2em;
+            background: linear-gradient(45deg, #f59e0b, #3b82f6);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.2em;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
         }
     </style>
 </head>
@@ -70,7 +91,7 @@
         <div class="space-y-4">
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="text-2xl mr-3">✍️</div>
+                    <div class="text-2xl mr-3 emoji">📝</div>
                     <div>
                         <h3 class="text-base font-bold text-orange-400">文案岗</h3>
                         <p class="text-xs text-slate-300">文案编导组</p>
@@ -80,7 +101,7 @@
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="text-2xl mr-3">🎬</div>
+                    <div class="text-2xl mr-3 emoji">🎬</div>
                     <div>
                         <h3 class="text-base font-bold text-orange-400">剪辑岗</h3>
                         <p class="text-xs text-slate-300">短视频编导组</p>
@@ -90,7 +111,7 @@
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="text-2xl mr-3">📺</div>
+                    <div class="text-2xl mr-3 emoji">📺</div>
                     <div>
                         <h3 class="text-base font-bold text-orange-400">直播策划岗</h3>
                         <p class="text-xs text-slate-300">直播组</p>
@@ -100,7 +121,7 @@
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="text-2xl mr-3">📈</div>
+                    <div class="text-2xl mr-3 emoji">📈</div>
                     <div>
                         <h3 class="text-base font-bold text-orange-400">运营岗</h3>
                         <p class="text-xs text-slate-300">线上运营组</p>
@@ -110,7 +131,7 @@
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 flex items-center justify-between">
                 <div class="flex items-center">
-                    <div class="text-2xl mr-3">💼</div>
+                    <div class="text-2xl mr-3 emoji">💼</div>
                     <div>
                         <h3 class="text-base font-bold text-orange-400">销售岗</h3>
                         <p class="text-xs text-slate-300">私域运营组</p>
@@ -132,7 +153,7 @@
         <h1 class="text-xl font-bold text-center mb-4 text-orange-400">糯米AI五大功能模块</h1>
         <div class="space-y-4">
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2">⚡ 文案编导组</h3>
+                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">⚡</span> 文案编导组</h3>
                 <p class="text-xs text-orange-300 mb-3">秒出获客文案（1天1人完成3人1月工作量）</p>
                 <div class="text-xs text-slate-300 space-y-1">
                     <p>• 给主题撰写文案 - 1分钟生成完整钩子文案</p>
@@ -141,7 +162,7 @@
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2">🎬 短视频编导组</h3>
+                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">🎬</span> 短视频编导组</h3>
                 <p class="text-xs text-orange-300 mb-3">短视频获客蓝海工厂（一人顶一个视频团队）</p>
                 <div class="text-xs text-slate-300 space-y-1">
                     <p>• AI数字人 - 输入文案脚本，自动生成数字人播报视频</p>
@@ -150,7 +171,7 @@
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2">📢 直播组</h3>
+                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">📢</span> 直播组</h3>
                 <p class="text-xs text-orange-300 mb-3">高转化直播内容生产（让直播间成交翻10倍）</p>
                 <div class="text-xs text-slate-300 space-y-1">
                     <p>• 直播稿拆解 - 智能拆解成交逻辑和话术技巧</p>
@@ -158,7 +179,7 @@
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2">📈 线上运营组</h3>
+                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">📈</span> 线上运营组</h3>
                 <p class="text-xs text-orange-300 mb-3">全域流量获客系统（从0到1建立获客机器）</p>
                 <div class="text-xs text-slate-300 space-y-1">
                     <p>• 线上定位大师 - 9套定位分析，解决同质化竞争</p>
@@ -167,7 +188,7 @@
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                <h3 class="text-lg font-bold text-orange-400 mb-2">👥 私域运营组</h3>
+                <h3 class="text-lg font-bold text-orange-400 mb-2"><span class="icon">👥</span> 私域运营组</h3>
                 <p class="text-xs text-orange-300 mb-3">变现收割机（让你月业绩快速成交）</p>
                 <div class="text-xs text-slate-300 space-y-1">
                     <p>• 朋友圈大师 - 10种不同类型的高转化朋友圈文案</p>
@@ -188,17 +209,17 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 给主题撰写文案 - 1分钟生成完整钩子文案，零基础也能写出专业内容</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 给主题撰写文案 - 1分钟生成完整钩子文案，零基础也能写出专业内容</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 长文章改写爆款 - 粘贴长文，秒变爆款短文案</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 长文章改写爆款 - 粘贴长文，秒变爆款短文案</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 爆款黄金开头 - 16种开头，3秒抓住用户注意力</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 爆款黄金开头 - 16种开头，3秒抓住用户注意力</p>
                     </div>
                 </div>
                 <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs">🚀 超高效率：一天一人完成3人一月的工作量</p>
+                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🚀</span> 超高效率：一天一人完成3人一月的工作量</p>
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
@@ -207,17 +228,17 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 基础文案生成</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 基础文案生成</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 需要详细提示词</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 需要详细提示词</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 缺乏行业针对性</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 缺乏行业针对性</p>
                     </div>
                 </div>
                 <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs">❌ 被动生成，需要反复调试</p>
+                    <p class="text-red-300 font-medium text-xs"><span class="emoji">❌</span> 被动生成，需要反复调试</p>
                 </div>
             </div>
         </div>
@@ -234,17 +255,17 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ AI数字人 - 告别真人出镜限制</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> AI数字人 - 告别真人出镜限制</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 短阵系统 - 智能管理多个账号</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 短阵系统 - 智能管理多个账号</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 视频包装精剪 - 剪辑不求人</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 视频包装精剪 - 剪辑不求人</p>
                     </div>
                 </div>
                 <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs">🎬 革命性创新：无需拍摄，一键生成专业视频</p>
+                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🎬</span> 革命性创新：无需拍摄，一键生成专业视频</p>
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
@@ -253,17 +274,17 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 需要拍摄素材</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 需要拍摄素材</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 手动剪辑</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 手动剪辑</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 时间消耗大</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 时间消耗大</p>
                     </div>
                 </div>
                 <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs">⏱️ 传统流程：拍摄→剪辑→修正，耗时耗力</p>
+                    <p class="text-red-300 font-medium text-xs"><span class="emoji">⏱️</span> 传统流程：拍摄→剪辑→修正，耗时耗力</p>
                 </div>
             </div>
         </div>
@@ -280,14 +301,14 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 直播稿拆解 - 智能拆解成交逻辑和话术技巧</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 直播稿拆解 - 智能拆解成交逻辑和话术技巧</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 直播稿框架 - 自动生成完整直播稿框架</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 直播稿框架 - 自动生成完整直播稿框架</p>
                     </div>
                 </div>
                 <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs">🎯 深度理解直播逻辑，提供完整解决方案</p>
+                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🎯</span> 深度理解直播逻辑，提供完整解决方案</p>
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
@@ -296,14 +317,14 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 基础脚本模板</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 基础脚本模板</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 缺乏个性化</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 缺乏个性化</p>
                     </div>
                 </div>
                 <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs">📝 只提供模板，缺乏智能化指导</p>
+                    <p class="text-red-300 font-medium text-xs"><span class="emoji">📝</span> 只提供模板，缺乏智能化指导</p>
                 </div>
             </div>
         </div>
@@ -320,17 +341,17 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 线上定位大师 - 9套定位分析</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 线上定位大师 - 9套定位分析</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 引流钩子设计师 - 批量生成精准钩子</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 引流钩子设计师 - 批量生成精准钩子</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ AI海报 - 自动设计专业海报</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> AI海报 - 自动设计专业海报</p>
                     </div>
                 </div>
                 <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs">🚀 全链路运营思维，完整方案</p>
+                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">🚀</span> 全链路运营思维，完整方案</p>
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
@@ -339,14 +360,14 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 功能分散</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 功能分散</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 需要多工具协作</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 需要多工具协作</p>
                     </div>
                 </div>
                 <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs">🔧 功能割裂，缺乏系统性</p>
+                    <p class="text-red-300 font-medium text-xs"><span class="emoji">🔧</span> 功能割裂，缺乏系统性</p>
                 </div>
             </div>
         </div>
@@ -363,14 +384,14 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 朋友圈大师（10种） - 覆盖全场景</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 朋友圈大师（10种） - 覆盖全场景</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-300">✅ 私域SOP策划师 - 完整运营流程</p>
+                        <p class="text-xs text-slate-300"><span class="emoji">✅</span> 私域SOP策划师 - 完整运营流程</p>
                     </div>
                 </div>
                 <div class="bg-orange-900/30 border border-orange-500 rounded-lg p-3">
-                    <p class="text-orange-300 font-medium text-xs">💬 深度理解私域运营，个性化策略</p>
+                    <p class="text-orange-300 font-medium text-xs"><span class="emoji">💬</span> 深度理解私域运营，个性化策略</p>
                 </div>
             </div>
             <div class="bg-slate-800 rounded-lg p-4 border-2 border-gray-500">
@@ -379,14 +400,14 @@
                 </div>
                 <div class="space-y-2 mb-4">
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 文案素材库</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 文案素材库</p>
                     </div>
                     <div class="bg-slate-700/30 rounded-lg p-2 border border-slate-600/30">
-                        <p class="text-xs text-slate-400">❌ 缺乏策略指导</p>
+                        <p class="text-xs text-slate-400"><span class="emoji">❌</span> 缺乏策略指导</p>
                     </div>
                 </div>
                 <div class="bg-red-900/30 border border-red-500 rounded-lg p-3">
-                    <p class="text-red-300 font-medium text-xs">📱 只提供素材，缺乏专业化运营</p>
+                    <p class="text-red-300 font-medium text-xs"><span class="emoji">📱</span> 只提供素材，缺乏专业化运营</p>
                 </div>
             </div>
         </div>
@@ -418,16 +439,16 @@
             </div>
         </div>
         <div class="bg-slate-800 rounded-lg border-2 border-orange-400 p-4 mb-6">
-            <h3 class="text-lg font-bold text-orange-400 text-center mb-4">🧠 AI系统价值 🧠</h3>
+            <h3 class="text-lg font-bold text-orange-400 text-center mb-4"><span class="emoji">🧠</span> AI系统价值 <span class="emoji">🧠</span></h3>
             <div class="text-center space-y-3">
                 <p class="text-base text-orange-200 font-medium">一套AI系统承载整个企业的运营流程，打造永动的商业引擎。</p>
                 <p class="text-sm text-blue-200">标准化管理，让系统更落地更实用。</p>
-                <p class="text-orange-300 font-medium text-sm">✨ 持续优化升级中······ ✨</p>
+                <p class="text-orange-300 font-medium text-sm"><span class="emoji">✨</span> 持续优化升级中······ <span class="emoji">✨</span></p>
             </div>
         </div>
         <div class="text-center">
             <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-blue-500 text-white px-4 py-3 rounded-lg text-sm font-bold">
-                🧠 AI时代，让智能成为你的竞争优势 ✨
+                <span class="emoji">🧠</span> AI时代，让智能成为你的竞争优势 <span class="emoji">✨</span>
             </div>
         </div>
     </div>
