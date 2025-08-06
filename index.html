@@ -119,15 +119,16 @@
             const scrollContainerRef = useRef(null);
 
             const slides = [
-                // 第1页：封面页
+                // 第1页：封面页 - 修改标题布局
                 {
                     type: 'cover',
-                    title: '糯米AI vs 传统工具全面对比',
-                    subtitle: '从单点解决到全链路智能化',
+                    title: '糯米AI VS 传统工具',
+                    subtitle: '全面对比',
+                    thirdLine: '从单点解决到全链路智能化',
                     quote: '好的AI系统 = 10年经验的老员工\n一个眼神就心领神会，无需繁琐培训和反复沟通',
                     background: 'bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800'
                 },
-                // 第2页：全链路闭环系统
+                // 其他页面保持不变...
                 {
                     type: 'workflow',
                     title: '全链路闭环系统',
@@ -139,7 +140,6 @@
                         { name: '持续运营', desc: '全模块协同工作' }
                     ]
                 },
-                // 第3页：总结页
                 {
                     type: 'summary',
                     title: '糯米AI = 替代整个部门',
@@ -153,7 +153,6 @@
                     ],
                     conclusion: '传统方案：多个工具 + 多个岗位 + 高成本\n糯米AI：一套系统解决全链路需求'
                 },
-                // 第4页：功能总览页 - 完整版
                 {
                     type: 'overview',
                     title: '糯米AI五大功能模块',
@@ -295,7 +294,6 @@
                         }
                     ]
                 },
-                // 第5页：文案编导组对比
                 {
                     type: 'comparison',
                     title: '文案编导组对比',
@@ -320,7 +318,6 @@
                         disadvantage: '❌ 被动生成，需要反复调试，缺乏专业理解'
                     }
                 },
-                // 第6页：短视频编导组对比
                 {
                     type: 'comparison',
                     title: '短视频编导组对比',
@@ -342,7 +339,6 @@
                         disadvantage: '⏱️ 传统流程：拍摄→剪辑→修正，耗时耗力'
                     }
                 },
-                // 第7页：直播组对比
                 {
                     type: 'comparison',
                     title: '直播组对比',
@@ -363,7 +359,6 @@
                         disadvantage: '📝 只提供模板，缺乏智能化和个性化指导'
                     }
                 },
-                // 第8页：线上运营组对比
                 {
                     type: 'comparison',
                     title: '线上运营组对比',
@@ -387,7 +382,6 @@
                         disadvantage: '🔧 功能割裂，需要多个工具拼凑，缺乏系统性'
                     }
                 },
-                // 第9页：私域运营对比
                 {
                     type: 'comparison',
                     title: '私域运营对比',
@@ -415,7 +409,6 @@
                         disadvantage: '📱 只提供素材，缺乏专业化运营能力'
                     }
                 },
-                // 第10页：运营思维升级 - 结尾页面
                 {
                     type: 'ending',
                     title: '运营思维升级',
@@ -436,14 +429,14 @@
                 }
             ];
 
-            // 重置滚动位置
+            // ... 其他函数保持不变 ...
+
             const resetScrollPosition = useCallback(() => {
                 if (scrollContainerRef.current) {
                     scrollContainerRef.current.scrollTop = 0;
                 }
             }, []);
 
-            // 翻页函数
             const nextSlide = useCallback(() => {
                 if (isTransitioning) return;
                 console.log('Next slide clicked');
@@ -477,7 +470,6 @@
                 }, 150);
             }, [isTransitioning, currentSlide, resetScrollPosition]);
 
-            // 触摸事件处理
             const handleTouchStart = useCallback((e) => {
                 setTouchEnd(null);
                 setTouchStart(e.targetTouches[0].clientX);
@@ -502,7 +494,6 @@
                 }
             }, [touchStart, touchEnd, nextSlide, prevSlide]);
 
-            // 屏幕点击处理
             const handleScreenClick = useCallback((e) => {
                 e.stopPropagation();
                 
@@ -519,7 +510,6 @@
                 }
             }, [prevSlide, nextSlide]);
 
-            // 键盘事件监听
             useEffect(() => {
                 const handleKeyDown = (event) => {
                     if (event.key === 'ArrowLeft') {
@@ -537,7 +527,7 @@
                 };
             }, [prevSlide, nextSlide]);
 
-            // 渲染幻灯片内容
+            // 渲染幻灯片内容 - 只修改封面页部分
             const renderSlide = (slide) => {
                 switch (slide.type) {
                     case 'cover':
@@ -548,13 +538,17 @@
                                     <div className="absolute bottom-10 right-10 w-12 h-12 border border-white/20 rotate-12"></div>
                                     <div className="absolute top-1/2 left-5 w-8 h-8 border border-white/20 rotate-45"></div>
                                 </div>
-                                <h1 className={`text-3xl md:text-4xl font-bold text-center mb-6 relative z-10 px-4 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.title}</h1>
-                                <p className={`text-lg md:text-xl text-center text-blue-200 relative z-10 mb-4 px-4 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.subtitle}</p>
-                                <div className={`mt-4 text-orange-400 relative z-10 mb-6 transition-all duration-500 ease-out delay-200 ${isTransitioning ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}>
+                                {/* 第一行：糯米AI VS 传统工具 */}
+                                <h1 className={`text-3xl md:text-4xl font-bold text-center mb-2 relative z-10 px-4 transition-all duration-500 ease-out ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.title}</h1>
+                                {/* 第二行：全面对比 */}
+                                <h2 className={`text-2xl md:text-3xl font-bold text-center mb-4 relative z-10 px-4 transition-all duration-500 ease-out delay-100 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.subtitle}</h2>
+                                {/* 第三行：从单点解决到全链路智能化 */}
+                                <p className={`text-lg md:text-xl text-center text-blue-200 relative z-10 mb-4 px-4 transition-all duration-500 ease-out delay-200 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>{slide.thirdLine}</p>
+                                <div className={`mt-4 text-orange-400 relative z-10 mb-6 transition-all duration-500 ease-out delay-300 ${isTransitioning ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}>
                                     <div className="w-16 h-1 bg-orange-400 mx-auto"></div>
                                 </div>
                                 {slide.quote && (
-                                    <div className={`relative z-10 text-center px-4 transition-all duration-500 ease-out delay-300 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
+                                    <div className={`relative z-10 text-center px-4 transition-all duration-500 ease-out delay-400 ${isTransitioning ? 'translate-y-4 opacity-0' : 'translate-y-0 opacity-100'}`}>
                                         <p className="text-sm md:text-base text-orange-200 font-medium leading-relaxed whitespace-pre-line">
                                             {slide.quote}
                                         </p>
@@ -563,6 +557,7 @@
                             </div>
                         );
 
+                    // 其他页面的渲染逻辑保持完全不变...
                     case 'workflow':
                         return (
                             <div ref={scrollContainerRef} className={`bg-slate-900 text-white h-full overflow-y-auto transition-all duration-300 ease-in-out ${isTransitioning ? 'opacity-0 translate-x-4' : 'opacity-100 translate-x-0'}`} style={{ scrollBehavior: 'smooth', overscrollBehavior: 'none' }}>
